@@ -1,4 +1,3 @@
-// frontend/src/components/Services.jsx
 import React, { useState } from 'react';
 
 const Services = () => {

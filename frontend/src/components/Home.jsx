@@ -32,26 +32,20 @@ const Home = () => {
     return () => clearTimeout(timeout);
   }, [charIndex, isDeleting, wordIndex, words]);
 
-  // CV Download Function
   const downloadCV = () => {
-    // Create a link element
     const link = document.createElement('a');
-   
     link.href = '/cv/Simranpreet_Kaur_CV.pdf';
-    
     link.download = 'Simranpreet_Kaur_CV.pdf';
-    
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
 
-  // Social media links - Replace with your actual URLs
   const socialLinks = {
     github: 'https://github.com/simranbehl149',
     linkedin: 'https://www.linkedin.com/in/simranpreet-kaur-b06806252/',
     telegram: 'https://web.telegram.org/a/#6162168856',
-    instagram: 'hhttps://www.instagram.com/simran114_/'
+    instagram: 'https://www.instagram.com/simran114_/'
   };
 
   return (
@@ -65,40 +59,16 @@ const Home = () => {
           <i className="ph ph-download-simple"></i> Download CV
         </button>
         <div className="social-links">
-          <a 
-            href={socialLinks.github} 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="social-icon"
-            title="GitHub"
-          >
+          <a href={socialLinks.github} target="_blank" rel="noopener noreferrer" className="social-icon" title="GitHub">
             <i className="ph ph-github-logo"></i>
           </a>
-          <a 
-            href={socialLinks.linkedin} 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="social-icon"
-            title="LinkedIn"
-          >
+          <a href={socialLinks.linkedin} target="_blank" rel="noopener noreferrer" className="social-icon" title="LinkedIn">
             <i className="ph ph-linkedin-logo"></i>
           </a>
-          <a 
-            href={socialLinks.telegram} 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="social-icon"
-            title="Telegram"
-          >
+          <a href={socialLinks.telegram} target="_blank" rel="noopener noreferrer" className="social-icon" title="Telegram">
             <i className="ph ph-telegram-logo"></i>
           </a>
-          <a 
-            href={socialLinks.instagram} 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="social-icon"
-            title="Instagram"
-          >
+          <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" className="social-icon" title="Instagram">
             <i className="ph ph-instagram-logo"></i>
           </a>
         </div>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { ensureArray } from '../utils/helpers';
 
 const About = () => {
   const [activeTab, setActiveTab] = useState('experience');
@@ -8,21 +9,20 @@ const About = () => {
   const [skills, setSkills] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Sample data for when backend is not running
   const sampleExperiences = [
     {
       _id: '1',
       year: '2023 - 2024',
       title: 'Frontend Developer',
       company: 'Mindstay Technology',
-      description: 'Built responsive and optimized UIs using React.js and Tailwind CSS. Collaborated with backend teams to integrate APIs and improve user experience.'
+      description: 'Built responsive and optimized UIs using React.js and Tailwind CSS.'
     },
     {
       _id: '2',
       year: '2022 - 2023',
       title: 'Frontend Developer Intern',
       company: 'Tech Solutions',
-      description: 'Developed reusable components and managed state using Redux. Implemented responsive designs and improved page load performance.'
+      description: 'Developed reusable components and managed state using Redux.'
     }
   ];
 
@@ -32,21 +32,11 @@ const About = () => {
       year: '2020 - 2023',
       degree: 'Bachelor of Computer Applications (BCA)',
       institution: 'CS University, Dehradun',
-      description: 'Studied core subjects like Data Structures, Web Development, and Operating Systems. Built multiple academic projects using JavaScript and the MERN stack.'
-    },
-    {
-      _id: '2',
-      year: '2018 - 2020',
-      degree: '12th Standard',
-      institution: 'Punjab School Education Board',
-      description: 'Completed higher secondary education with Computer Science as major subject.'
+      description: 'Studied Data Structures, Web Development, and Operating Systems.'
     }
   ];
 
-  const sampleSkills = [
-    'HTML5', 'CSS3', 'JavaScript', 'React.js', 'Node.js', 'Express.js',
-    'MongoDB', 'Git & GitHub', 'Tailwind CSS', 'REST APIs', 'Redux', 'TypeScript'
-  ];
+  const sampleSkills = ['HTML5', 'CSS3', 'JavaScript', 'React.js', 'Node.js', 'MongoDB'];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,9 +46,11 @@ const About = () => {
           axios.get('/api/education'),
           axios.get('/api/skills')
         ]);
-        setExperiences(expRes.data);
-        setEducation(eduRes.data);
-        setSkills(skillsRes.data.map(s => s.name));
+        
+        setExperiences(ensureArray(expRes.data));
+        setEducation(ensureArray(eduRes.data));
+        const skillsData = ensureArray(skillsRes.data);
+        setSkills(skillsData.map(s => s.name || s));
       } catch (error) {
         console.log('Using sample data');
         setExperiences(sampleExperiences);
@@ -88,14 +80,12 @@ const About = () => {
         <div className="about-grid">
           <div className="about-left">
             <h3>Why Hire Me?</h3>
-            <p>I'm a passionate and experienced MERN stack developer who simplifies complex concepts. I deliver quality mentorship, clear teaching, and reliable websites tailored to client needs with full dedication and care.</p>
-            <div className="tabs-container">
-              <div className="tabs">
-                <button className={`tab-btn ${activeTab === 'experience' ? 'active' : ''}`} onClick={() => setActiveTab('experience')}>Experience</button>
-                <button className={`tab-btn ${activeTab === 'education' ? 'active' : ''}`} onClick={() => setActiveTab('education')}>Education</button>
-                <button className={`tab-btn ${activeTab === 'skills' ? 'active' : ''}`} onClick={() => setActiveTab('skills')}>Skills</button>
-                <button className={`tab-btn ${activeTab === 'about-me' ? 'active' : ''}`} onClick={() => setActiveTab('about-me')}>About Me</button>
-              </div>
+            <p>I'm a passionate MERN stack developer who simplifies complex concepts. I deliver quality mentorship and reliable websites tailored to client needs.</p>
+            <div className="tabs">
+              <button className={`tab-btn ${activeTab === 'experience' ? 'active' : ''}`} onClick={() => setActiveTab('experience')}>Experience</button>
+              <button className={`tab-btn ${activeTab === 'education' ? 'active' : ''}`} onClick={() => setActiveTab('education')}>Education</button>
+              <button className={`tab-btn ${activeTab === 'skills' ? 'active' : ''}`} onClick={() => setActiveTab('skills')}>Skills</button>
+              <button className={`tab-btn ${activeTab === 'about-me' ? 'active' : ''}`} onClick={() => setActiveTab('about-me')}>About Me</button>
             </div>
           </div>
           <div className="about-right">
@@ -130,7 +120,7 @@ const About = () => {
             </div>
             <div className={`tab-pane ${activeTab === 'about-me' ? 'active' : ''}`}>
               <div className="about-me-content">
-                <p>I'm a passionate developer dedicated to building impactful digital experiences, blending creativity and code to solve real-world problems efficiently and effectively.</p>
+                <p>I'm a passionate developer dedicated to building impactful digital experiences.</p>
                 <div className="info-grid">
                   <div className="info-item">
                     <div className="info-label">Name</div>
@@ -146,7 +136,7 @@ const About = () => {
                   </div>
                   <div className="info-item">
                     <div className="info-label">Experience</div>
-                    <div className="info-value">Fresher</div>
+                    <div className="info-value">1+ years</div>
                   </div>
                 </div>
               </div>

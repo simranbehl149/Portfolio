@@ -1,44 +1,41 @@
 import React, { useState, useEffect } from 'react';
+import { ensureArray } from '../utils/helpers';
 
 const ImageCarousel = ({ images, title, autoPlay = true, interval = 3000 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  
+  const imageArray = ensureArray(images);
 
-  // If no images or only one image, show it without carousel
-  if (!images || images.length === 0) {
+  if (imageArray.length === 0) {
     return (
       <div className="carousel-container">
         <div className="carousel-slide">
-          <div className="carousel-placeholder">
-            <i className="ph ph-code"></i>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+            <i className="ph ph-code" style={{ fontSize: '4rem', color: 'var(--green)', opacity: 0.3 }}></i>
           </div>
         </div>
       </div>
     );
   }
 
-  if (images.length === 1) {
+  if (imageArray.length === 1) {
     return (
       <div className="carousel-container">
         <div className="carousel-slide">
-          <img src={images[0]} alt={title} />
+          <img src={imageArray[0]} alt={title || 'Project'} />
         </div>
       </div>
     );
   }
 
-  // Auto-play functionality
   useEffect(() => {
-    if (!autoPlay || images.length <= 1) return;
-
+    if (!autoPlay || imageArray.length <= 1) return;
     const timer = setInterval(() => {
-      setCurrentIndex((prevIndex) => 
-        prevIndex === images.length - 1 ? 0 : prevIndex + 1
-      );
+      setCurrentIndex(prev => prev === imageArray.length - 1 ? 0 : prev + 1);
     }, interval);
-
     return () => clearInterval(timer);
-  }, [images.length, autoPlay, interval]);
+  }, [imageArray.length, autoPlay, interval]);
 
   const goToSlide = (index) => {
     if (isTransitioning) return;
@@ -48,24 +45,16 @@ const ImageCarousel = ({ images, title, autoPlay = true, interval = 3000 }) => {
   };
 
   const nextSlide = () => {
-    goToSlide(currentIndex === images.length - 1 ? 0 : currentIndex + 1);
+    goToSlide(currentIndex === imageArray.length - 1 ? 0 : currentIndex + 1);
   };
 
   const prevSlide = () => {
-    goToSlide(currentIndex === 0 ? images.length - 1 : currentIndex - 1);
+    goToSlide(currentIndex === 0 ? imageArray.length - 1 : currentIndex - 1);
   };
 
   return (
     <div className="carousel-container">
-      <div 
-        className="carousel-wrapper"
-        onMouseEnter={() => {
-          // Pause auto-play on hover if needed
-        }}
-        onMouseLeave={() => {
-          // Resume auto-play if needed
-        }}
-      >
+      <div className="carousel-wrapper">
         <div 
           className="carousel-slides"
           style={{
@@ -73,27 +62,23 @@ const ImageCarousel = ({ images, title, autoPlay = true, interval = 3000 }) => {
             transition: 'transform 0.5s ease-in-out'
           }}
         >
-          {images.map((image, index) => (
+          {imageArray.map((image, index) => (
             <div key={index} className="carousel-slide">
-              <img src={image} alt={`${title} - ${index + 1}`} />
+              <img src={image} alt={`${title || 'Project'} - ${index + 1}`} />
               <div className="carousel-counter">
-                {index + 1} / {images.length}
+                {index + 1} / {imageArray.length}
               </div>
             </div>
           ))}
         </div>
-
-        {/* Navigation Arrows */}
         <button className="carousel-arrow carousel-arrow-left" onClick={prevSlide}>
           <i className="ph ph-caret-left"></i>
         </button>
         <button className="carousel-arrow carousel-arrow-right" onClick={nextSlide}>
           <i className="ph ph-caret-right"></i>
         </button>
-
-        {/* Dot Indicators */}
         <div className="carousel-dots">
-          {images.map((_, index) => (
+          {imageArray.map((_, index) => (
             <button
               key={index}
               className={`carousel-dot ${index === currentIndex ? 'active' : ''}`}

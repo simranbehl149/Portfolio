@@ -27,19 +27,37 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="admin-login">
-      <div className="login-card">
+    <div className="admin-login-page">
+      <div className="admin-login-card">
         <h2>Admin <span>Login</span></h2>
-        <p style={{ marginBottom: '1.5rem', color: 'var(--gray)' }}>Enter your credentials to access dashboard</p>
+        <p className="subtitle">Enter your credentials to access dashboard</p>
         <form onSubmit={handleSubmit}>
-          <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-          <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-          {error && <p style={{ color: '#ef4444', marginBottom: '1rem' }}>{error}</p>}
-          <button type="submit" className="btn" disabled={loading} style={{ width: '100%' }}>{loading ? 'Logging in...' : 'Login'}</button>
+          <div className="form-group">
+            <input 
+              type="email" 
+              placeholder="Email" 
+              value={email} 
+              onChange={(e) => setEmail(e.target.value)} 
+              required 
+            />
+          </div>
+          <div className="form-group">
+            <input 
+              type="password" 
+              placeholder="Password" 
+              value={password} 
+              onChange={(e) => setPassword(e.target.value)} 
+              required 
+            />
+          </div>
+          {error && <div className="login-error">{error}</div>}
+          <button type="submit" className="login-btn" disabled={loading}>
+            {loading ? 'Logging in...' : 'Login'}
+          </button>
         </form>
-        <p style={{ marginTop: '1rem', fontSize: '0.8rem', color: 'var(--gray)' }}>
-          Default: admin@portfolio.com / admin123
-        </p>
+        <div className="default-credentials">
+          Default: <strong>admin@portfolio.com</strong> / <strong>admin123</strong>
+        </div>
       </div>
     </div>
   );

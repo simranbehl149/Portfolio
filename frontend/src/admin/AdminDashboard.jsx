@@ -10,14 +10,19 @@ import ManageContacts from './ManageContacts';
 const AdminDashboard = () => {
   const [activeSection, setActiveSection] = useState('projects');
   const [loading, setLoading] = useState(true);
+  const [adminEmail, setAdminEmail] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('adminToken');
+    const email = localStorage.getItem('adminEmail');
+    
     if (!token) {
       navigate('/admin');
       return;
     }
+    
+    setAdminEmail(email || '');
 
     const verifyToken = async () => {
       try {
@@ -43,34 +48,43 @@ const AdminDashboard = () => {
   if (loading) {
     return (
       <div className="admin-dashboard">
-        <div className="loader"><div className="spinner"></div></div>
+        <div className="admin-loader">
+          <div className="spinner"></div>
+        </div>
       </div>
     );
   }
+
+  const navItems = [
+    { id: 'projects', label: '📁 Projects' },
+    { id: 'experience', label: '💼 Experience' },
+    { id: 'education', label: '🎓 Education' },
+    { id: 'skills', label: '🛠️ Skills' },
+    { id: 'contacts', label: '📩 Messages' }
+  ];
 
   return (
     <div className="admin-dashboard">
       <div className="dashboard-header">
         <h2>Admin <span>Dashboard</span></h2>
-        <button onClick={handleLogout} className="logout-btn">🚪 Logout</button>
+        <div className="admin-info">
+          <span className="admin-email">{adminEmail}</span>
+          <button onClick={handleLogout} className="logout-btn">🚪 Logout</button>
+        </div>
       </div>
+      
       <div className="dashboard-nav">
-        <button className={activeSection === 'projects' ? 'active' : ''} onClick={() => setActiveSection('projects')}>
-          📁 Projects
-        </button>
-        <button className={activeSection === 'experience' ? 'active' : ''} onClick={() => setActiveSection('experience')}>
-          💼 Experience
-        </button>
-        <button className={activeSection === 'education' ? 'active' : ''} onClick={() => setActiveSection('education')}>
-          🎓 Education
-        </button>
-        <button className={activeSection === 'skills' ? 'active' : ''} onClick={() => setActiveSection('skills')}>
-          🛠️ Skills
-        </button>
-        <button className={activeSection === 'contacts' ? 'active' : ''} onClick={() => setActiveSection('contacts')}>
-          📩 Messages
-        </button>
+        {navItems.map(item => (
+          <button 
+            key={item.id}
+            className={activeSection === item.id ? 'active' : ''} 
+            onClick={() => setActiveSection(item.id)}
+          >
+            {item.label}
+          </button>
+        ))}
       </div>
+      
       {activeSection === 'projects' && <ManageProjects />}
       {activeSection === 'experience' && <ManageExperience />}
       {activeSection === 'education' && <ManageEducation />}

@@ -16,7 +16,7 @@ const Contact = () => {
     setStatus({ type: '', message: '' });
 
     try {
-      const response = await axios.post('/api/contact', formData);
+      await api.post('/contact', formData);
       setStatus({ type: 'success', message: '✅ Message sent successfully!' });
       setFormData({ name: '', email: '', message: '' });
     } catch (error) {
@@ -33,7 +33,7 @@ const Contact = () => {
         <div className="contact-grid">
           <div className="contact-info">
             <h3>Let's Connect</h3>
-            <p>I'm always excited to work on new projects and collaborate with innovative people. Feel free to reach out!</p>
+            <p>I'm always excited to work on new projects. Feel free to reach out!</p>
             <div className="contact-detail">
               <i className="ph ph-envelope"></i>
               <span>simranbehl495@gmail.com</span>
@@ -49,36 +49,16 @@ const Contact = () => {
           </div>
           <form className="contact-form" onSubmit={handleSubmit}>
             <div className="form-group">
-              <input 
-                type="text" 
-                name="name" 
-                placeholder="Your Name" 
-                value={formData.name} 
-                onChange={handleChange} 
-                required 
-              />
+              <input type="text" name="name" placeholder="Your Name" value={formData.name} onChange={handleChange} required />
             </div>
             <div className="form-group">
-              <input 
-                type="email" 
-                name="email" 
-                placeholder="Your Email" 
-                value={formData.email} 
-                onChange={handleChange} 
-                required 
-              />
+              <input type="email" name="email" placeholder="Your Email" value={formData.email} onChange={handleChange} required />
             </div>
             <div className="form-group">
-              <textarea 
-                name="message" 
-                placeholder="Your Message" 
-                value={formData.message} 
-                onChange={handleChange} 
-                required
-              ></textarea>
+              <textarea name="message" placeholder="Your Message" value={formData.message} onChange={handleChange} required></textarea>
             </div>
             {status.message && (
-              <div className={`form-status ${status.type}`} style={{
+              <div style={{
                 padding: '10px',
                 borderRadius: '5px',
                 marginBottom: '1rem',
